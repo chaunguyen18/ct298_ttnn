@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BẢN ĐỒ</title>
-    
+
     <!-- Liên kết file style.css -->
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- Thư viện Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
+
 <body>
 
     <!-- Sidebar -->
@@ -23,12 +25,12 @@
         <div class="menu-item" onclick="moveTo(10.0309, 105.7709, 'Khu II - ĐH Cần Thơ')">Khu II - ĐH Cần Thơ</div>
         <h2>Quản lý</h2>
         <div class="menu-item" onclick="toggleSubMenu()">Quản lý thông tin</div>
-<div id="sub-menu" class="submenu">
-    <div class="menu-item">Thêm</div>
-    <div class="menu-item">Sửa</div>
-</div>
-
-        <div class="menu-item">Báo cáo</div>
+        <div id="sub-menu" class="submenu">
+            <div class="menu-item">Thêm</div>
+            <div class="menu-item">Sửa</div>
+        </div>
+        <div class="menu-item">Quản lý trung tâm</div>
+        <div class="menu-item">Quản lý khóa học</div>
         <div class="menu-item">Thống kê</div>
     </div>
 
@@ -80,12 +82,13 @@
                     .catch(error => console.error(error));
             }
         });
-        function toggleSubMenu() {
-    var submenu = document.getElementById("sub-menu");
-    submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
-}
 
+        function toggleSubMenu() {
+            var submenu = document.getElementById("sub-menu");
+            submenu.style.display = (submenu.style.display === "block") ? "none" : "block";
+        }
     </script>
 
 </body>
+
 </html>
