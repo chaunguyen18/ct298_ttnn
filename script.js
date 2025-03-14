@@ -106,33 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    var myModal = new bootstrap.Modal(document.getElementById("updateCenterModal"));
-myModal.show();
-
-    document.querySelectorAll(".btn-update").forEach(button => {
-        button.addEventListener("click", function () {
-            let modal = new bootstrap.Modal(document.getElementById("updateCenterModal"));
-            modal.show();
-
-            // Cập nhật giá trị input trong modal từ button
-            document.getElementById("trungtamID").value = this.getAttribute("data-id");
-            document.getElementById("trungtamName").value = this.getAttribute("data-name");
-            document.getElementById("trungtamPhone").value = this.getAttribute("data-phone");
-            document.getElementById("trungtamEmail").value = this.getAttribute("data-email");
-            document.getElementById("trungtamLocation").value = this.getAttribute("data-address");
-            document.getElementById("trungtamLat").value = this.getAttribute("data-x");
-            document.getElementById("trungtamLon").value = this.getAttribute("data-y");
-        });
-    });
-
-    console.log("Bootstrap:", typeof bootstrap); // Kiểm tra xem Bootstrap có được tải chưa
-
-    let modalElement = document.getElementById("updateCenterModal");
-    if (modalElement) {
-        var myModal = new bootstrap.Modal(modalElement);
-    } else {
-        console.error("Modal không tồn tại trong DOM!");
-    }
+    
 
 
 });
