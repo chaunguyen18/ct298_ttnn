@@ -1,10 +1,131 @@
-<h2>Quản lý khóa học</h2>
-<form id="courseForm">
-    <label for="courseName">Tên khóa học:</label>
-    <input type="text" id="courseName" name="courseName">
-    
-    <label for="courseDuration">Thời gian:</label>
-    <input type="text" id="courseDuration" name="courseDuration">
-    
-    <button type="submit">Thêm khóa học</button>
-</form>
+<?php 
+include("connect.php");
+$sql = "SELECT * FROM khoa_hoc";
+$result = $conn->query($sql);
+?>
+
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trung Tâm Ngoại Ngữ TalkWise </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="manage">
+        <div class="container-fluid ds-trungtam">
+
+            <h2>Danh Sách khóa học</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã khóa học</th>
+                        <th>Tên khóa học</th>
+                        <th>Học phí</th>
+                        <th>Cấp độ khóa học</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row['KH_ID']}</td>
+                        <td>{$row['KH_ten']}</td>
+                        <td>{$row['KH_hocphi']}</td>
+                        <td>{$row['CDKH_ID']}</td>
+                        <td>
+                            <button class='btn btn-warning'
+                            data-id='{$row['KH_ID']}' 
+                            data-name='{$row['KH_ten']}'
+                            data-phone='{$row['KH_hocphi']}'
+                            data-email='{$row['CDKH_ID']}'
+                            >                                  
+                                Cập nhật
+                            </button>
+                            <button class='btn btn-danger'>Xóa</button>
+                        </td>
+                    </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+            }
+            ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="course-manage row">
+            <div class="col-md-6 d-flex justify-content-center">
+                <div class="update-course">
+                    <h2>Cập nhật thông tin khóa học</h2>
+                    <form id="mainForm">
+                        <div class="form-container d-flex flex-column">
+
+                            <label for="courseID">Mã khóa học:</label>
+                            <input type="text" id="courseID" name="courseID" readonly>
+
+                            <label for="courseName">Tên khóa học:</label>
+                            <input type="text" id="courseName" name="courseName">
+
+                            <label for="coursePrice">Học phí:</label>
+                            <input type="text" id="coursePrice" name="coursePrice">
+
+                            <label for="courseLevel">Cấp độ khóa học:</label>
+                            <input type="text" id="courseLevel" name="courseLevel">
+
+                        </div>
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit">Thêm</button>
+                            <button type="submit">Lưu</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex justify-content-center">
+                <div class="compare-course">
+                    <h2>So sánh học phí</h2>
+                    <h6>Nhập tên trung tâm và tên khóa học cần so sánh.</h6>
+                    
+                    <form id="mainForm">
+                    <button type="button" class="btnCompareCourseLocation">So sánh theo vị trí</button>
+                    <button type="button" class="btnCompareCourseCenter">So sánh giữa các trung tâm</button>
+                        <div class="form-container d-flex flex-column">
+
+                            <label for="trungtamName">Tên trung tâm 1:</label>
+                            <input type="text" id="trungtamName" name="trungtamName">
+
+                            <label for="trungtamName">Tên trung tâm 2:</label>
+                            <input type="text" id="trungtamName" name="trungtamName">
+
+                            <label for="courseName">Tên khóa học:</label>
+                            <input type="text" id="courseName" name="courseName">
+
+                        </div>
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="button" class="btnComparePrice" onClick="comparePrice()">So sánh</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+
+</html>

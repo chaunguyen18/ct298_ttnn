@@ -30,6 +30,7 @@ footer {
     bottom: 0;
     left: 0;
     color: #02aaf7;
+    margin-top: 30px;
 }
 
 footer i{
@@ -49,12 +50,18 @@ footer i{
 
 .menu-item{
     text-transform: capitalize;
-    padding: 20px;
+    padding: 30px;
+    margin-top: 10px;
+}
+
+.menu-item:hover{
+    background-color: #0a4865;
 }
 
 .menu-item a{
     text-decoration: none !important;
     color: #02aaf7;
+
 }
 
 .menu-item:hover,
@@ -174,24 +181,28 @@ footer i{
     text-decoration: underline;
 }
 
+
+
 /* Center Management */
 
-.trungtam-manage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 30px;
-    border-radius: 20px;
-}
-
-.trungtam-manage h1 {
+.manage h2{
     text-align: center;
     color: #02aaf7;
     margin-bottom: 20px;
+    margin-top: 20px;
+    text-transform: capitalize;
 }
 
-#trungtamForm {
+.trungtam-manage {
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+#mainForm {
     width: 80%;
     background: #fff;
     padding: 30px;
@@ -200,16 +211,16 @@ footer i{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
-#trungtamForm .form-container {
+#mainForm .form-container {
     padding: 20px;
 }
 
-#trungtamForm .form-column label{
+#mainForm .form-column label{
     color: #02aaf7;
 
 }
 
-#trungtamForm input {
+#mainForm input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -218,7 +229,7 @@ footer i{
     margin-top: 10px;
 }
 
-#trungtamForm button {
+#mainForm button {
     padding: 15px;
     background: #ffc108;
     color: #000;
@@ -231,11 +242,30 @@ footer i{
     transition: all 0.2s ease-in-out;
 }
 
-#trungtamForm button:hover {
+#mainForm button:hover {
     background: #fff;
     color: #ffc108;
     cursor: pointer;
     border: 1px solid #f59300;
 }
+
+/*Course Management*/
+
+.compare-course label,
+.update-course label{
+    color: #02aaf7;   
+
+}
+
+.update-course #mainForm,
+.compare-course #mainForm{
+    width: 100%;
+}
+.compare-course h6{
+    font-style: italic;
+    text-align: center;
+}
+
+
 
 

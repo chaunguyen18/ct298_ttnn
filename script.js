@@ -1,9 +1,6 @@
 var map;
 var marker;
 
-
-
-
 // Hàm di chuyển đến vị trí mới
 function moveTo(lat, lon, locationName = "Vị trí đã tìm") {
     map.setView([lat, lon], 15); 
@@ -88,6 +85,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 case "Quản lý khóa học":
                     fileName = "course_management.php";
                     break;
+                
+                case "Quản lý thông tin":
+                    fileName = "infor_management.php";
+                    break;
+                
+                case "Quản lý đánh giá":
+                    fileName = "review_management.php";
+                    break;
                 default:
                     contentAction.innerHTML = "<p>Chức năng chưa hỗ trợ.</p>";
                     return;
@@ -106,10 +111,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    
-
-
 });
-
-
-
