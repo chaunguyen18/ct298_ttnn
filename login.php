@@ -1,3 +1,38 @@
+<?php
+session_start();
+include("connect.php"); // Kết nối CSDL
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['loginUserName'];
+    $password = $_POST['loginUserPwd'];
+
+    // Kiểm tra tài khoản
+    $sql = "SELECT * FROM nguoi_dung WHERE ND_username = ? AND ND_password = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 1) {
+        $user = $result->fetch_assoc();
+        $_SESSION['user_id'] = $user['ND_ID'];
+        $_SESSION['username'] = $user['ND_username'];
+        $_SESSION['role'] = $user['ND_ROLE'];
+
+        // Chuyển hướng theo quyền
+        if ($user['ND_ROLE'] == 1) {
+            header("Location: index.php"); // Admin vào index.php
+        } else {
+            header("Location: user.php");  // User vào user.php
+        }
+        exit();
+    } else {
+        $error = "Sai tài khoản hoặc mật khẩu!";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -17,12 +52,13 @@
     <div class="container-fluid d-flex justify-content-center align-items-center">
         <div class="login">
             <h1>Đăng nhập</h1>
-            <form id="loginForm" class="">
-                <label>Tên đăng nhập hoặc Email:</label>
-                <input type="text" id="loginUserName" name="loginUserName">
+            <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+            <form id="loginForm" method="POST" action="process_login.php">
+                <label>Tên đăng nhập</label>
+                <input type="text" id="loginUserName" name="loginUserName" required>
 
                 <label for="">Mật khẩu:</label>
-                <input type="password" id="loginUserPwd" name="loginUserPwd">
+                <input type="password" id="loginUserPwd" name="loginUserPwd" required>
 
                 <button class="btnSubmit" type="submit">Gửi</button>
             </form>

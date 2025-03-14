@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
             }
 
-            // Gọi file HTML và chèn vào content-action
+            
             fetch(fileName)
                 .then(response => response.text())
                 .then(html => {
@@ -109,6 +109,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     contentAction.innerHTML = "<p>Lỗi tải giao diện.</p>";
                 });
         });
+    });
+
+    /* Xử lý đăng nhập */
+
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Ngăn form reload trang
+
+        let username = document.getElementById("loginUserName").value;
+        let password = document.getElementById("loginUserPwd").value;
+
+        let formData = new FormData();
+        formData.append("username", username);
+        formData.append("password", password);
+
+        fetch("process_login.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                if (data.role == 1) {
+                    window.location.href = "admin.php";
+                } else if (data.role == 2) {
+                    window.location.href = "user.php";
+                }
+            } else {
+                alert("Đăng nhập thất bại! Vui lòng kiểm tra lại.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
     });
 
 });

@@ -1,20 +1,10 @@
 <?php
 session_start();
-
-// Nếu chưa đăng nhập, chuyển về login.php
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 2) {
     header("Location: login.php");
     exit();
 }
-
-// Nếu đăng nhập mà là User (ND_ROLE = 2), thì chuyển qua user.php
-if ($_SESSION['role'] == 2) {
-    header("Location: user.php");
-    exit();
-}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -46,10 +36,10 @@ if ($_SESSION['role'] == 2) {
                 </form>
 
                 <div class="sidebar-menu">
-                    <div class="menu-item">Quản lý trung tâm</div>
-                    <div class="menu-item">Quản lý khóa học</div>
-                    <div class="menu-item">Quản lý thông tin</div>
+                    <div class="menu-item">Tìm kiếm nâng cao</div>
+                    <div class="menu-item">So sánh học phí</div>
                     <div class="menu-item">Quản lý đánh giá</div>
+                    <div class="menu-item">Quản lý thông tin cá nhân</div>
                     <div class="menu-item"><a href="logout.php">Đăng xuất</a></div>
                 </div>
             </div>
