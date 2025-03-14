@@ -1,6 +1,9 @@
 <?php 
 include("connect.php");
-$sql = "SELECT * FROM khoa_hoc";
+$sql = "SELECT khoa_hoc.*, capdo_khoahoc.CDKH_ten
+FROM khoa_hoc 
+INNER JOIN capdo_khoahoc ON khoa_hoc.CDKH_ID = capdo_khoahoc.CDKH_ID;
+";
 $result = $conn->query($sql);
 ?>
 
@@ -26,7 +29,7 @@ $result = $conn->query($sql);
             <h2>Danh Sách khóa học</h2>
             <table class="table table-bordered">
                 <thead class="table-dark">
-                    <tr>
+                    <tr class="text-center">
                         <th>Mã khóa học</th>
                         <th>Tên khóa học</th>
                         <th>Học phí</th>
@@ -42,14 +45,9 @@ $result = $conn->query($sql);
                         <td>{$row['KH_ID']}</td>
                         <td>{$row['KH_ten']}</td>
                         <td>{$row['KH_hocphi']}</td>
-                        <td>{$row['CDKH_ID']}</td>
+                        <td>{$row['CDKH_ten']}</td>
                         <td>
-                            <button class='btn btn-warning'
-                            data-id='{$row['KH_ID']}' 
-                            data-name='{$row['KH_ten']}'
-                            data-phone='{$row['KH_hocphi']}'
-                            data-email='{$row['CDKH_ID']}'
-                            >                                  
+                            <button class='btn btn-warning'>                                  
                                 Cập nhật
                             </button>
                             <button class='btn btn-danger'>Xóa</button>

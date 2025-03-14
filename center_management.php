@@ -1,7 +1,18 @@
 <?php 
 include("connect.php");
-$sql = "SELECT * FROM trung_tam";
-$result = $conn->query($sql);
+$sql_tt = "SELECT trung_tam.*, capdo_trungtam.CDTT_ten, xa_phuong.XP_ten 
+FROM trung_tam 
+INNER JOIN capdo_trungtam ON trung_tam.CDTT_ID = capdo_trungtam.CDTT_ID 
+INNER JOIN xa_phuong ON trung_tam.XP_ID = xa_phuong.XP_ID;
+
+";
+$result_tt = $conn->query($sql_tt);
+
+$sql_gv = "SELECT giao_vien.*, trung_tam.TT_ten 
+           FROM giao_vien 
+           INNER JOIN trung_tam ON giao_vien.TT_ID = trung_tam.TT_ID";
+
+$result_gv = $conn->query($sql_gv);
 ?>
 
 
@@ -30,7 +41,7 @@ $result = $conn->query($sql);
             <h2>Danh Sách Trung Tâm</h2>
             <table class="table table-bordered">
                 <thead class="table-dark">
-                    <tr>
+                    <tr class="text-center">
                         <th>Mã TT</th>
                         <th>Tên Trung Tâm</th>
                         <th>SĐT</th>
@@ -38,13 +49,15 @@ $result = $conn->query($sql);
                         <th>Địa Chỉ</th>
                         <th>Tọa Độ X</th>
                         <th>Tọa Độ Y</th>
+                        <th>Cấp độ</th>
+                        <th>Xã/phường</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+            if ($result_tt->num_rows > 0) {
+                while ($row = $result_tt->fetch_assoc()) {
                     echo "<tr>
                         <td>{$row['TT_ID']}</td>
                         <td>{$row['TT_ten']}</td>
@@ -53,20 +66,16 @@ $result = $conn->query($sql);
                         <td>{$row['TT_diachi']}</td>
                         <td>{$row['TT_toado_x']}</td>
                         <td>{$row['TT_toado_y']}</td>
+                        <td>{$row['CDTT_ten']}</td>
+                        <td>{$row['XP_ten']}</td>
                         <td>
                         <div class='d-flex flex-column gap-3' >
                         <button class='btn btn-warning'
-                            data-id='{$row['TT_ID']}' 
-                            data-name='{$row['TT_ten']}'
-                            data-phone='{$row['TT_sdt']}'
-                            data-email='{$row['TT_email']}'
-                            data-address='{$row['TT_diachi']}'
-                            data-x='{$row['TT_toado_x']}'
-                            data-y='{$row['TT_toado_y']}'
-                            >                                  
+                                                        >                                  
                                 Cập nhật
                             </button>
-                            <button class='btn btn-danger'>Xóa</button></div>
+                            <button class='btn btn-danger'>Xóa</button>
+                            </div>
                             
                         </td>
                     </tr>";
@@ -125,12 +134,65 @@ $result = $conn->query($sql);
                     </div>
                 </div>
                 <div class="d-flex justify-content-center gap-3">
-                <button type="submit">Thêm</button>
+                    <button type="submit">Thêm</button>
                     <button type="submit">Lưu</button>
                 </div>
 
             </form>
         </div>
+
+        <div class="container-fluid">
+
+            <h2>Danh Sách Giáo Viên</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th>Mã giáo viên</th>
+                        <th>Họ tên giáo viên</th>
+                        <th>Năm kinh nghiệm</th>
+                        <th>SDT</th>
+                        <th>Email</th>
+                        <th>Quốc tịch</th>
+                        <th>Chuyên môn</th>
+                        <th>Trung tâm giảng dạy</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+            if ($result_gv->num_rows > 0) {
+                while ($row = $result_gv->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row['GV_ID']}</td>
+                        <td>{$row['GV_ten']}</td>
+                        <td>{$row['GV_namkn']}</td>
+                        <td>{$row['GV_sdt']}</td>
+                        <td>{$row['GV_email']}</td>
+                        
+                        <td>{$row['GV_quoctich']}</td>
+                        <td>{$row['GV_chuyenmon']}</td>
+                        <td>{$row['TT_ten']}</td>
+                     
+                        <td>
+                        <div class='d-flex flex-column gap-3' >
+                        <button class='btn btn-warning'                            
+                            >                                  
+                                Cập nhật
+                            </button>
+                            <button class='btn btn-danger'>Xóa</button>
+                            </div>
+                            
+                        </td>
+                    </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+            }
+            ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <script src="script.js"></script>
 </body>
