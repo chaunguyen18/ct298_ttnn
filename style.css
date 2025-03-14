@@ -98,6 +98,7 @@ footer i{
     border-radius: 20px;
     padding: 10px;
     transition: 0.1s ease-in-out;
+    font-size: 18px;
 }
 
 .btnSearch:hover{
@@ -128,7 +129,6 @@ footer i{
     display: flex;
     flex-direction: column;
     gap: 15px;
-    
 }
 
 .login input{
@@ -140,7 +140,7 @@ footer i{
 
 .btnSubmit{
     background-color: #f59300;
-    color: white;
+    color: #fff;
     border: none;
     padding: 10px;
     border-radius: 20px;
@@ -176,22 +176,66 @@ footer i{
 
 /* Center Management */
 
-.center-manage{
+.trungtam-manage {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 10px;
+    padding: 30px;
+    border-radius: 20px;
 }
 
-.center-manage h1{
+.trungtam-manage h1 {
     text-align: center;
     color: #02aaf7;
-    text-align: center;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-#centerForm{
-    display: flex;
-    flex-direction: column;
+#trungtamForm {
+    width: 80%;
+    background: #fff;
+    padding: 30px;
+    margin: 0;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
+
+#trungtamForm .form-container {
+    padding: 20px;
+}
+
+#trungtamForm .form-column label{
+    color: #02aaf7;
+
+}
+
+#trungtamForm input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#trungtamForm button {
+    padding: 15px;
+    background: #ffc108;
+    color: #000;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    width: auto;
+    margin-right: 10px;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+}
+
+#trungtamForm button:hover {
+    background: #fff;
+    color: #ffc108;
+    cursor: pointer;
+    border: 1px solid #f59300;
+}
+
+

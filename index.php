@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trung Tâm Ngoại Ngữ TalkWise </title>
+    <title>Quản Lý Trung Tâm Ngoại Ngữ TalkWise </title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,12 +17,12 @@
 <body>
     <div class="container-fluid">
         <div class="row content-map">
-            <div class="sidebar col-md-4 text-white p-3">
+            <div class="sidebar col-md-3 text-white p-3">
                 <form id="search-box" class="search-box row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <input type="text" id="search-input" class="search-input">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <button class="btnSearch" type="button" onclick="searchLocation()">Tìm</button>
                     </div>
                 </form>
@@ -35,7 +35,7 @@
                     <div class="menu-item"><a href="login.php">Đăng nhập/Đăng ký</a></div>
                 </div>
             </div>
-            <div id="map" class="map col-md-8 p-0"></div>
+            <div id="map" class="map col-md-9 p-0"></div>
         </div>
         <div class="container-fluid">
             <div class="content-action row">
