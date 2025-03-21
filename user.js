@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.status === "success") {
             if (data.role == 1) {
-              window.location.href = "index.php";
+              window.location.href = "admin.php";
             } else if (data.role == 2) {
               window.location.href = "user.php";
             }

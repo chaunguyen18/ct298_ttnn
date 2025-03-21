@@ -33,8 +33,8 @@
             </form>
 
             <div class="d-flex justify-content-between w-100">
-                <a href="index.php"><i class="fa-solid fa-arrow-left"></i>Về trang chủ</a>
-                <a href="login.php">Đã có tài khoản?</a>
+                <a href="admin.php"><i class="fa-solid fa-arrow-left"></i>Về trang chủ</a>
+                <a href="index.php">Đã có tài khoản?</a>
 
             </div>
 

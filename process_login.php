@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Kiểm tra nếu input rỗng
     if (empty($username) || empty($password)) {
-        header("Location: login.php?error=empty");
+        header("Location: index.php?error=empty");
         exit();
     }
 
@@ -28,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Điều hướng theo quyền
         if ($user['ND_ROLE'] == 1) {
-            header("Location: index.php"); 
+            header("Location: admin.php"); 
         } else {
             header("Location: user.php");  
         }
         exit();
     } else {
-        header("Location: login.php?error=invalid");
+        header("Location: index.php?error=invalid");
         exit();
     }
 }
