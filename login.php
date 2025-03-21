@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="">Mật khẩu:</label>
                 <input type="password" id="loginUserPwd" name="loginUserPwd" required>
 
-                <button class="btnSubmit" type="submit">Gửi</button>
+                <button class="btnSubmit" type="submit">Login</button>
             </form>
             <a href="index.php"><i class="fa-solid fa-arrow-left"></i>Về trang chủ</a>
             <div class="d-flex justify-content-between w-100">
