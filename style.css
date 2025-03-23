@@ -211,6 +211,10 @@ footer i{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
+#mainForm label{
+    color: #02aaf7;
+}
+
 #mainForm .form-container {
     padding: 20px;
 }
@@ -254,7 +258,6 @@ footer i{
 .compare-course label,
 .update-course label{
     color: #02aaf7;   
-
 }
 
 .update-course #mainForm,
@@ -266,6 +269,30 @@ footer i{
     text-align: center;
 }
 
+/*Compare Fee */
+
+.compare-fee-content form label{
+    color: #02aaf7 !important;
+}
+
+.compare-fee-content h6{
+    font-style: italic;
+    text-align: center;
+}
+
+.compare-fee form .form-select{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.compare-fee form .form-select option{
+    padding: 10px;
+}
 
 
 
