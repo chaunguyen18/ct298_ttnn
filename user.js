@@ -1,3 +1,4 @@
+
 var map;
 var marker;
 
@@ -125,36 +126,66 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /* Xử lý đăng nhập */
-
-  document
-    .getElementById("loginForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault(); // Ngăn form reload trang
-
-      let username = document.getElementById("loginUserName").value;
-      let password = document.getElementById("loginUserPwd").value;
-
-      let formData = new FormData();
-      formData.append("username", username);
-      formData.append("password", password);
-
-      fetch("process_login.php", {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success") {
-            if (data.role == 1) {
-              window.location.href = "admin.php";
-            } else if (data.role == 2) {
-              window.location.href = "user.php";
-            }
-          } else {
-            alert("Đăng nhập thất bại! Vui lòng kiểm tra lại.");
-          }
-        })
-        .catch((error) => console.error("Error:", error));
-    });
 });
+
+/* Xử lý học phí*/
+
+function comparePrice() {
+  let KH_ID = document.querySelector("[aria-label='courseName']").value;
+  
+  if (KH_ID === "Lựa chọn khóa học") {
+      alert("Vui lòng chọn khóa học!");
+      return;
+  }
+
+  let formData = new FormData();
+  formData.append("KH_ID", KH_ID);
+
+  fetch("compare_fee_ajax.php", {
+      method: "POST",
+      body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    let tableBody = document.getElementById("compareData");
+    tableBody.innerHTML = data; 
+
+})
+  .catch(error => console.error("Lỗi:", error));
+}
+
+/* Xử lý học phí theo phạm vi*/
+
+function comparePricePV() {
+  let courseID = document.querySelector("[aria-label='courseRangeName']").value;
+  let districtID = document.querySelector("[aria-label='stateName']").value;
+  let wardID = document.querySelector("[aria-label='phuongxaName']").value;
+
+  console.log("Selected values:", courseID, districtID, wardID); // Kiểm tra dữ liệu
+
+  if (!courseID || !districtID || !wardID || 
+      courseID === "Lựa chọn khóa học" || 
+      districtID === "Quận/Huyện" || 
+      wardID === "Phường/Xã") {
+      alert("Vui lòng chọn đầy đủ thông tin trước khi so sánh!");
+      return;
+  }
+
+  let formData = new FormData();
+  formData.append("KH_ID", courseID);
+  formData.append("QH_ID", districtID);
+  formData.append("XP_ID", wardID);
+
+  fetch("compare_fee_range_ajax.php", {
+      method: "POST",
+      body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log("Response from server:", data); // Debug dữ liệu nhận được
+    let tableBody = document.getElementById("compareData");
+    tableBody.innerHTML = data; 
+  })
+  .catch(error => console.error("Lỗi:", error));
+}
+

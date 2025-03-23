@@ -1,4 +1,4 @@
-<?php 
+<?php
 include("connect.php");
 $sql = "SELECT khoa_hoc.*, 
                capdo_khoahoc.CDKH_ten, 
@@ -35,25 +35,25 @@ $result = $conn->query($sql);
     <div class="manage">
         <div class="container-fluid ds-trungtam">
 
-            <h2>Danh Sách khóa học</h2>
+            <h2>Danh sách khóa học</h2>
             <table class="table table-bordered">
-            <thead class="table-dark">
-    <tr class="text-center">
-        <th>Mã khóa học</th>
-        <th>Tên khóa học</th>
-        <th>Học phí</th>
-        <th>Cấp độ khóa học</th>
-        <th>Trung tâm</th>
-        <th>Ngày bắt đầu</th>
-        <th>Thời gian</th>
-        <th>Hành động</th>
-    </tr>
-</thead>
-<tbody>
-    <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th>Mã khóa học</th>
+                        <th>Tên khóa học</th>
+                        <th>Học phí</th>
+                        <th>Cấp độ khóa học</th>
+                        <th>Trung tâm</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Thời gian</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>
                 <td>{$row['KH_ID']}</td>
                 <td>{$row['KH_ten']}</td>
                 <td>{$row['TG_hocphi']}</td>
@@ -66,12 +66,12 @@ $result = $conn->query($sql);
                     <button class='btn btn-danger'>Xóa</button>
                 </td>
             </tr>";
-        }
-    } else {
-        echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
-    }
-    ?>
-</tbody>
+                        }
+                    } else {
+                        echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
+                    }
+                    ?>
+                </tbody>
 
 
             </table>
@@ -109,7 +109,7 @@ $result = $conn->query($sql);
             <div class="col-md-6 d-flex justify-content-center">
                 <div class="compare-course">
                     <h2>So sánh học phí</h2>
-                    <h6>Nhập tên trung tâm và tên khóa học cần so sánh.</h6>
+                    <h6>Nhập tên khóa học cần so sánh.</h6>
 
                     <form id="mainForm">
                         <button type="button" class="btnCompareCourseLocation">So sánh theo vị trí</button>
