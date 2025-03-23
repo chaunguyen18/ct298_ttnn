@@ -37,18 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['KH_ID'], $_POST['QH_ID
 
     if ($result->num_rows > 0) {
 
-
-        // while ($row = $result->fetch_assoc()) {
-        //     echo "<tr>
-        //             <td>{$row['KH_ten']}</td>
-        //             <td>{$row['TT_ten']} VND</td>
-        //             <td>{$row['TG_hocphi']}</td>
-        //             <td>{$row['TG_thoigian']} tháng</td>
-        //             <td>{$row['QH_ten']}</td>
-        //             <td>{$row['XP_ten']}</td>
-        //           </tr>";
-        // }
-
         while ($row = $result->fetch_assoc()) {
             echo "<tr>
                     <td>{$row['KH_ten']}</td>
