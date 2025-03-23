@@ -61,7 +61,7 @@ $result_phuong = $conn->query($sql_phuong);
                     <div class="d-flex justify-content-center align-items-center flex-column">
 
                         <h3>So sánh học phí</h3>
-                        <h6>Lựa chọn thông tin cần so sánh.</h6>
+                        <h6>Lựa chọn khóa học cần so sánh.</h6>
 
                         <form id="mainForm" class="mt-3 mb-3">
                             <div class="form-container d-flex flex-column">
