@@ -47,7 +47,9 @@ if ($_SESSION['role'] == 1) {
                     <div class="menu-item">Tìm kiếm nâng cao</div>
                     <div class="menu-item">So sánh học phí</div>
                     <div class="menu-item">Đánh giá</div>
-                    <div class="menu-item">Quản lý thông tin cá nhân</div>
+                    <div class="menu-item">
+                        <a href="user_info.php" style="text-decoration: none; color: inherit;">Quản lý thông tin cá nhân</a>
+                    </div>
                     <div class="menu-item"><a href="logout.php">Đăng xuất</a></div>
                 </div>
             </div>
