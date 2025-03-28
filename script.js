@@ -108,6 +108,10 @@ document.addEventListener("DOMContentLoaded", function () {
           fileName = "review_management.php";
           break;
 
+        case "Quản lý giảng viên":
+          fileName = "teacher_management.php";
+          break;
+
         default:
           contentAction.innerHTML = "<p>Chức năng chưa hỗ trợ.</p>";
           return;
@@ -158,5 +162,3 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error:", error));
     });
 });
-
-

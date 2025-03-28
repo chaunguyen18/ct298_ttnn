@@ -1,19 +1,32 @@
 <?php 
 include("connect.php");
 
+$id = $_GET['id'] ?? null;
 
+$course = null;
+if ($id) {
+    $sql1 = "SELECT * FROM nguoi_dung WHERE ND_ID = '$id'";
+
+    $result1 = mysqli_query($conn, $sql1);
+    if ($result1->num_rows > 0) {
+        $course = mysqli_fetch_assoc($result1);
+    }
+}
 $sql = "SELECT * FROM nguoi_dung";
 
+
+
 $result = $conn->query($sql);
+
 
 if (isset($_POST['add'])) {
     $trungtamName = $_POST['courseName'];
     $trungtamPhone = $_POST['coursePrice'];
-    $trungtamEmail = $_POST['trungtamName'];
-    $trungtamlevel = $_POST['trungtamLevel'];
+    $trungtamEmail = $_POST['trungtamLevel']; 
+    $trungtamLevel = $_POST['trungtamName'];
     $trungtamLocation = $_POST['courseInstructor'];
     $trungtamLat = $_POST['courseSessions'];
-   
+
     $errors = [];
 
 
@@ -22,36 +35,38 @@ if (!preg_match('/^\d{10}$/', $trungtamPhone)) {
 }
 
 
-if (!filter_var($trungtamlevel, FILTER_VALIDATE_EMAIL)) {
+if (!filter_var($trungtamEmail, FILTER_VALIDATE_EMAIL)) {
     $errors['trungtamLevel'] = "Email không hợp lệ.";
 } else {
 
-    $email_check_query = "SELECT ND_ID FROM nguoi_dung WHERE ND_email = '$trungtamlevel' LIMIT 1";
+    $email_check_query = "SELECT ND_ID FROM nguoi_dung WHERE ND_email = '$trungtamEmail'  AND ND_ID != '$id' LIMIT 1";
     $email_check_result = mysqli_query($conn, $email_check_query);
     if (mysqli_num_rows($email_check_result) > 0) {
         $errors['trungtamLevel'] = "Email đã tồn tại. Vui lòng sử dụng email khác.";
     }
 }
 if (empty($errors)) {
-    $sql1 = "INSERT INTO nguoi_dung (ND_hoten, ND_email, ND_sdt, ND_password, ND_ROLE, ND_username) VALUES ('$trungtamName', '$trungtamlevel', '$trungtamPhone', 
-                        '$trungtamLocation', '$trungtamEmail', '$trungtamLat')";
-    $result1 = mysqli_query($conn, $sql1);
 
-    
-    if ($result1) {
-        
-    
-       
-            echo "<script>
-                alert('Thêm người dùng $trungtamName thành công!');
-                window.location.href = 'infor_management.php';  
-            </script>";
-        } else {
-            echo "Lỗi khi thêm thời gian học!";
-        }
-    
+    $sql_update = "UPDATE nguoi_dung 
+                    SET ND_hoten='$trungtamName', ND_email='$trungtamEmail', ND_sdt='$trungtamPhone', 
+                        ND_password='$trungtamLocation', ND_ROLE='$trungtamLevel', ND_username='$trungtamLat' 
+                    WHERE ND_ID=$id";
+
+    $result_update = mysqli_query($conn, $sql_update);
+
+    if ($result_update) {
+        echo "<script>
+            alert('Cập nhật người dùng \"$trungtamName\" thành công!');
+            window.location.href = 'infor_management.php';  
+        </script>";
+    } else {
+        echo "<script>alert('Lỗi khi cập nhật!');</script>";
     }
-} 
+    
+    
+}
+}
+    
 ?>
 
 
@@ -145,16 +160,16 @@ if (empty($errors)) {
         <div class="update-course">
             <h2 class="text-center">Thêm mới người dùng</h2>
             <form id="mainForm" method="POST" enctype="multipart/form-data">
-           
+             
                 <div class="row">
                     <div class="col-md-6">
                         <label for="courseName">Họ tên người dùng:</label>
-                        <input type="text" id="courseName" name="courseName" class="form-control" required>
+                        <input type="text" id="courseName" name="courseName" class="form-control" value="<?= $course['ND_hoten'] ?? '' ?>" required>
                     </div>
                     
                     <div class="col-md-6">
                         <label for="coursePrice">Số điện thoại:</label>
-                        <input type="text" id="coursePrice" name="coursePrice" class="form-control" required>
+                        <input type="text" id="coursePrice" name="coursePrice" class="form-control" value="<?= $course['ND_sdt'] ?? '' ?>" required>
                         <?php
                             if (isset($errors['coursePrice'])) {
                                 echo '<p style="color: red; font-size: 14px;  margin-top: 5px;">' . $errors['coursePrice'] . '</p>';
@@ -163,11 +178,12 @@ if (empty($errors)) {
                     </div>
                 </div>
 
+     
                 <div class="row mt-3">
                 <div class="col-md-6">
                     <div class="d-flex flex-column">
                         <label for="trungtamLevel" class="mb-2">Email:</label>
-                        <input type="text" id="trungtamLevel" name="trungtamLevel" class="form-control" required>
+                        <input type="text" id="trungtamLevel" name="trungtamLevel" class="form-control" value="<?= $course['ND_email'] ?? '' ?>" required>
                         <?php
                             if (isset($errors['trungtamLevel'])) {
                                 echo '<p style="color: red; font-size: 14px;  margin-top: 5px;">' . $errors['trungtamLevel'] . '</p>';
@@ -179,33 +195,34 @@ if (empty($errors)) {
 
                     
                 <div class="col-md-6">
-                    <div class="d-flex flex-column">
-                        <label for="trungtamName" class="mb-2">Vai trò:</label>
-                        <select id="trungtamName" name="trungtamName" class="form-control" style="height: 50px;" required>
-                            <option value="">-Chọn vai trò-</option>
-                            <option value="1">Admin</option>
-                            s<option value="2">Người dùng</option>
-                        </select>
-                    </div>
+                <div class="d-flex flex-column">
+                    <label for="trungtamName" class="mb-2">Vai trò:</label>
+                    <select id="trungtamName" name="trungtamName" class="form-control" style="height: 50px;" required>
+                        <option value="">-Chọn vai trò-</option>
+                        <option value="1" <?= isset($course['ND_ROLE']) && $course['ND_ROLE'] == 1 ? 'selected' : '' ?>>Admin</option>
+                        <option value="2" <?= isset($course['ND_ROLE']) && $course['ND_ROLE'] == 2 ? 'selected' : '' ?>>Người dùng</option>
+                    </select>
+                </div>
+
                 </div>
                 </div>
 
-    
+             
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label for="courseSessions">Username:</label>
-                        <input type="text" id="courseSessions" name="courseSessions" class="form-control" required>
+                        <input type="text" id="courseSessions" name="courseSessions" class="form-control" value="<?= $course['ND_username'] ?? '' ?>" required>
                     </div>
 
                     <div class="col-md-6">
                         <label for="courseInstructor">Mật khẩu:</label>
-                        <input type="password" id="courseInstructor" name="courseInstructor" class="form-control" required>
+                        <input type="password" id="courseInstructor" name="courseInstructor" class="form-control" value="<?= $course['ND_password'] ?? '' ?>" required>
                     </div>
                 </div>
 
                 <!-- Nút Thêm -->
                 <div class="d-flex justify-content-center gap-3 mt-3">
-                    <button type="submit" name="add" class="btn btn-primary">Thêm</button>
+                    <button type="submit" name="add" class="btn btn-primary">Cập nhật</button>
                 </div>
             </form>
         </div>
@@ -216,7 +233,7 @@ if (empty($errors)) {
     <script>
         function Delete(id, trungtamName) {
             if (confirm(`Bạn có chắc chắn muốn xóa giảng viên "${trungtamName}" không?`)) {
-                window.location.href = `deleteuser.php?id=${id}`;
+                window.location.href = `deletecourse.php?id=${id}`;
             }
         }   
     </script>

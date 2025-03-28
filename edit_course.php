@@ -1,11 +1,32 @@
 <?php 
 include("connect.php");
+$id = $_GET['id'] ?? null;
 $category_query = "SELECT * FROM capdo_khoahoc";
 $category_result = mysqli_query($conn, $category_query);
 
 $brand_query = "SELECT * FROM trung_tam";
 $brand_result = mysqli_query($conn, $brand_query);
 
+$course = null;
+
+if ($id) {
+    $sql = "SELECT khoa_hoc.*, 
+                   capdo_khoahoc.CDKH_ten, 
+                   thoi_gian.TG_ngaybatdau, 
+                   thoi_gian.TG_thoigian, 
+                   thoi_gian.TG_hocphi, 
+                   trung_tam.TT_ten, trung_tam.TT_ID
+            FROM khoa_hoc 
+            INNER JOIN capdo_khoahoc ON khoa_hoc.CDKH_ID = capdo_khoahoc.CDKH_ID
+            LEFT JOIN thoi_gian ON khoa_hoc.KH_ID = thoi_gian.KH_ID
+            LEFT JOIN trung_tam ON thoi_gian.TT_ID = trung_tam.TT_ID
+            WHERE khoa_hoc.KH_ID = '$id'";
+
+    $result = mysqli_query($conn, $sql);
+    if ($result->num_rows > 0) {
+        $course = mysqli_fetch_assoc($result);
+    }
+}
 $sql = "SELECT khoa_hoc.*, 
                capdo_khoahoc.CDKH_ten, 
                thoi_gian.TG_ngaybatdau, 
@@ -16,11 +37,12 @@ $sql = "SELECT khoa_hoc.*,
         INNER JOIN capdo_khoahoc ON khoa_hoc.CDKH_ID = capdo_khoahoc.CDKH_ID
         LEFT JOIN thoi_gian ON khoa_hoc.KH_ID = thoi_gian.KH_ID
         LEFT JOIN trung_tam ON thoi_gian.TT_ID = trung_tam.TT_ID
-        GROUP BY khoa_hoc.KH_ID";
+        ORDER BY khoa_hoc.KH_ID";
 
 
 
 $result = $conn->query($sql);
+
 
 if (isset($_POST['add'])) {
     $trungtamName = $_POST['courseName'];
@@ -29,30 +51,30 @@ if (isset($_POST['add'])) {
     $trungtamlevel = $_POST['trungtamLevel'];
     $trungtamLocation = $_POST['courseInstructor'];
     $trungtamLat = $_POST['courseSessions'];
-   
     
+    if ($id) {
+        $sql1 = "UPDATE khoa_hoc 
+                 SET KH_ten='$trungtamName', CDKH_ID='$trungtamlevel' 
+                 WHERE KH_ID='$id'";
+        $result1 = mysqli_query($conn, $sql1);
 
-    $sql1 = "INSERT INTO khoa_hoc (KH_ten, CDKH_ID) VALUES ('$trungtamName', '$trungtamlevel')";
-    $result1 = mysqli_query($conn, $sql1);
+        if ($result1) {
+            $sql2 = "UPDATE thoi_gian 
+                     SET TG_ngaybatdau='$trungtamLat', TG_thoigian='$trungtamLocation', TG_hocphi='$trungtamPhone', TT_ID='$trungtamEmail' 
+                     WHERE KH_ID='$id'";
+            $result2 = mysqli_query($conn, $sql2);
 
-    
-    if ($result1) {
-        $KH_ID = mysqli_insert_id($conn);
-    
-        $sql2 = "INSERT INTO thoi_gian (KH_ID, TG_ngaybatdau, TG_thoigian, TG_hocphi, TT_ID) 
-                 VALUES ('$KH_ID', '$trungtamLat', '$trungtamLocation', '$trungtamPhone', '$trungtamEmail')";
-        $result2 = mysqli_query($conn, $sql2);
-    
-        if ($result2) {
-            echo "<script>
-                alert('Thêm khóa học $trungtamName thành công!');
-                window.location.href = 'course_management.php';  
-            </script>";
+            if ($result2) {
+                echo "<script>
+                    alert('Cập nhật khóa học $trungtamName thành công!');
+                    window.location.href = 'course_management.php';  
+                </script>";
+            } else {
+                echo "Lỗi khi cập nhật thời gian học!";
+            }
         } else {
-            echo "Lỗi khi thêm thời gian học!";
+            echo "Lỗi khi cập nhật khóa học!";
         }
-    } else {
-        echo "Lỗi khi thêm khóa học!";
     }
 }
     
@@ -102,7 +124,7 @@ if (isset($_POST['add'])) {
         <th>Tên khóa học</th>
         <th>Học phí</th>
         <th>Cấp độ khóa học</th>
-        <!-- <th>Trung tâm</th> -->
+        <th>Trung tâm</th>
         <th>Ngày bắt đầu</th>
         <th>Thời gian</th>
         <th>Hành động</th>
@@ -117,7 +139,7 @@ if (isset($_POST['add'])) {
                 <td>{$row['KH_ten']}</td>
                 <td>{$row['TG_hocphi']}</td>
                 <td>{$row['CDKH_ten']}</td>
-              
+                <td>{$row['TT_ten']}</td>
                 <td>{$row['TG_ngaybatdau']}</td>
                 <td>{$row['TG_thoigian']} tháng</td>
                 <td>
@@ -148,18 +170,18 @@ if (isset($_POST['add'])) {
         <div class="trungtam-manage">
     <div class="col-md-8">
         <div class="update-course">
-            <h2 class="text-center">Thêm mới khóa học</h2>
+            <h2 class="text-center">Cập nhật thông tin khóa học khóa học</h2>
             <form id="mainForm" method="POST" enctype="multipart/form-data">
                 <!-- Hàng 1: 2 cột -->
                 <div class="row">
                     <div class="col-md-6">
                         <label for="courseName">Tên khóa học:</label>
-                        <input type="text" id="courseName" name="courseName" class="form-control" required>
+                        <input type="text" id="courseName" name="courseName" class="form-control" value="<?= $course['KH_ten'] ?? '' ?>" required>
                     </div>
                     
                     <div class="col-md-6">
                         <label for="coursePrice">Học phí:</label>
-                        <input type="number" id="coursePrice" name="coursePrice" class="form-control" min='1' required>
+                        <input type="number" id="coursePrice" name="coursePrice" class="form-control" value="<?= $course['TG_hocphi'] ?? '' ?>" required>
                     </div>
                 </div>
 
@@ -170,11 +192,11 @@ if (isset($_POST['add'])) {
                         <label for="trungtamLevel" class="mb-2">Cấp độ khóa học:</label>
                         <select id="trungtamLevel" name="trungtamLevel" class="form-control" style="height: 50px;" required>
                             <option value="">-Chọn cấp độ-</option>
-                            <?php
-                            while ($row = mysqli_fetch_assoc($category_result)) {                                  
-                                echo "<option value='" . $row['CDKH_ID'] . "'>" . $row['CDKH_ten'] . "</option>";                                 
-                            }
-                            ?>
+                            <?php while ($row = mysqli_fetch_assoc($category_result)) { ?>
+                                <option value="<?= $row['CDKH_ID'] ?>" <?= ($row['CDKH_ID'] == $course['CDKH_ID']) ? 'selected' : '' ?>>
+                                    <?= $row['CDKH_ten'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
@@ -185,33 +207,32 @@ if (isset($_POST['add'])) {
                         <label for="trungtamName" class="mb-2">Trung tâm giảng dạy:</label>
                         <select id="trungtamName" name="trungtamName" class="form-control" style="height: 50px;" required>
                             <option value="">-Chọn trung tâm-</option>
-                            <?php
-                            while ($row = mysqli_fetch_assoc($brand_result)) {                                 
-                                $selected = ($row['TT_ID'] == $row_up['TT_ID']) ? 'selected' : ''; 
-                                echo "<option value='" . $row['TT_ID'] . "' $selected>" . $row['TT_ten'] . "</option>";                                 
-                            }
-                            ?>
+                            <?php while ($row = mysqli_fetch_assoc($brand_result)) { ?>
+                                <option value="<?= $row['TT_ID'] ?>" <?= ($row['TT_ID'] == $course['TT_ID']) ? 'selected' : '' ?>>
+                                    <?= $row['TT_ten'] ?>
+                                </option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
                 </div>
 
-                <!-- Hàng 3: 2 cột -->
+      
                 <div class="row mt-3">
                     <div class="col-md-6">
                         <label for="courseSessions">Ngày bắt đầu:</label>
-                        <input type="date" id="courseSessions" name="courseSessions" class="form-control" required>
+                        <input type="date" id="courseSessions" name="courseSessions" class="form-control" value="<?= $course['TG_ngaybatdau'] ?? '' ?>" required>
                     </div>
 
                     <div class="col-md-6">
                         <label for="courseInstructor">Thời gian:</label>
-                        <input type="text" id="courseInstructor" name="courseInstructor" class="form-control" required>
+                        <input type="text" id="courseInstructor" name="courseInstructor" class="form-control" value="<?= $course['TG_thoigian'] ?? '' ?>" required>
                     </div>
                 </div>
 
-                <!-- Nút Thêm -->
+         
                 <div class="d-flex justify-content-center gap-3 mt-3">
-                    <button type="submit" name="add" class="btn btn-primary">Thêm</button>
+                    <button type="submit" name="add" class="btn btn-primary">Cập nhật</button>
                 </div>
             </form>
         </div>
@@ -226,6 +247,36 @@ if (isset($_POST['add'])) {
             }
         }   
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let wards = <?php echo json_encode($wards); ?>;
+
+            document.getElementById("trungtamQuan").addEventListener("change", function() {
+                let qh_id = this.value;
+                let xaSelect = document.getElementById("trungtamXa");
+                xaSelect.innerHTML = '<option value="">-Chọn xã phường-</option>';
+                
+                wards.forEach(function(ward) {
+                    if (qh_id === "" || ward.QH_ID === qh_id) {
+                        let option = document.createElement("option");
+                        option.value = ward.XP_ID;
+                        option.textContent = ward.XP_ten;
+                        xaSelect.appendChild(option);
+                    }
+                });
+            });
+
+            document.getElementById("trungtamXa").addEventListener("change", function() {
+                let xp_id = this.value;
+                let qhSelect = document.getElementById("trungtamQuan");
+
+                let selectedWard = wards.find(ward => ward.XP_ID === xp_id);
+                if (selectedWard) {
+                    qhSelect.value = selectedWard.QH_ID;
+                }
+            });
+        });
+    </script> 
     <script src="script.js"></script>
 </body>
 
