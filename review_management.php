@@ -1,9 +1,13 @@
 <?php 
 include("connect.php");
-$sql = "SELECT danh_gia.*, khoa_hoc.KH_ten, nguoi_dung.ND_hoten 
-FROM danh_gia 
-INNER JOIN khoa_hoc ON danh_gia.KH_ID = khoa_hoc.KH_ID 
-INNER JOIN nguoi_dung ON danh_gia.ND_ID = nguoi_dung.ND_ID;
+$sql = "SELECT danh_gia.*, nguoi_dung.ND_hoten, thoi_gian.TG_thoigian, trung_tam.TT_ten, khoa_hoc.KH_ten
+        FROM danh_gia
+        INNER JOIN nguoi_dung ON danh_gia.ND_ID = nguoi_dung.ND_ID
+        INNER JOIN thoi_gian ON danh_gia.TG_ID = thoi_gian.TG_ID
+        INNER JOIN trung_tam ON thoi_gian.TT_ID = trung_tam.TT_ID
+        INNER JOIN khoa_hoc ON thoi_gian.KH_ID = khoa_hoc.KH_ID
+        ORDER BY thoi_gian.TG_thoigian DESC, nguoi_dung.ND_hoten ASC;
+
 
 ";
 $result = $conn->query($sql);
@@ -32,9 +36,9 @@ $result = $conn->query($sql);
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr class="text-center">
-                        <th>Mã người dùng</th>
+                        <th>STT</th>
                         <th>Tên người dùng</th>
-                        <th>Mã khóa học</th>
+                        <th>Tên trung tâm</th>
                         <th>Tên khóa học</th>
                         <th>Số sao</th>
                         <th>Nội dung đánh giá</th>
@@ -49,18 +53,23 @@ $result = $conn->query($sql);
                     echo "<tr>
                     <td>{$row['ND_ID']}</td>
                     <td>{$row['ND_hoten']}</td>
-                        <td>{$row['KH_ID']}</td>
+                        <td>{$row['TT_ten']}</td>
                         <td>{$row['KH_ten']}</td>
                         <td>{$row['DG_sao']}</td>
                         <td>{$row['DG_noidung']}</td>
                         <td>{$row['DG_ngay']}</td>
                         <td>
-                        <div class='d-flex flex-column gap-3' >
-                            <button class='btn btn-warning'>                                  
-                                Trả lời
-                            </button>
-                            <button class='btn btn-danger'>Xóa</button></div>      
-                        </div>                      
+                            <div class='d-flex flex-column gap-3'>
+                                <a href='edit_infor.php?id=" . $row['ND_ID'] . "'>
+                                    <button class='btn btn-warning'>
+                                        Cập nhật
+                                    </button>
+                                </a>
+                                <button class='btn btn-danger'
+                                    onclick=\"Delete(" . $row['ND_ID'] . ", '" . addslashes($row['ND_hoten']) . "')\">
+                                    Xóa
+                                </button>
+                            </div>
                         </td>
                     </tr>";
                 }
@@ -73,6 +82,13 @@ $result = $conn->query($sql);
         </div>
     </div>
     <script src="script.js"></script>
+    <script>
+        function Delete(id, trungtamName) {
+            if (confirm(`Bạn có chắc chắn muốn xóa đánh giá này không?`)) {
+                window.location.href = `deletereview.php?id=${id}`;
+            }
+        }   
+    </script>
 </body>
 
 
