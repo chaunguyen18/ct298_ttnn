@@ -5,6 +5,9 @@ $sql = "SELECT khoa_hoc.*,
                thoi_gian.TG_ngaybatdau, 
                thoi_gian.TG_thoigian, 
                thoi_gian.TG_hocphi,
+               trung_tam.TT_diachi,
+               trung_tam.TT_toado_x,
+               trung_tam.TT_toado_y,
                trung_tam.TT_ten
         FROM khoa_hoc 
         INNER JOIN capdo_khoahoc ON khoa_hoc.CDKH_ID = capdo_khoahoc.CDKH_ID
@@ -132,32 +135,38 @@ $result_phuong = $conn->query($sql_phuong);
                     <table class="table table-bordered">
                         <thead class="table-dark">
                             <tr class="text-center">
-
-                                <th>Tên khóa học</th>
+                                <th>STT</th>
                                 <th>Học phí</th>
                                 <th>Cấp độ khóa học</th>
                                 <th>Trung tâm</th>
+                                <th>Địa chỉ</th>
                                 <th>Ngày bắt đầu</th>
                                 <th>Thời gian</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody id="compareData">
                             <?php
                             if ($result->num_rows > 0) {
+                                $index = 1;
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr>
-
-                <td>{$row['KH_ten']}</td>
-                <td>{$row['TG_hocphi']}</td>
-                <td>{$row['CDKH_ten']}</td>
-                <td>{$row['TT_ten']}</td>
-                <td>{$row['TG_ngaybatdau']}</td>
-                <td>{$row['TG_thoigian']} tháng</td>
+                                        <td>{$index}</td>
+                                        <td>{$row['TG_hocphi']}</td>
+                                        <td>{$row['CDKH_ten']}</td>
+                                        <td>{$row['TT_ten']}</td>
+                                        <td>{$row['TT_diachi']}</td>
+                                        <td>{$row['TG_ngaybatdau']}</td>
+                                        <td>{$row['TG_thoigian']} tháng</td>
+                                        <td>                
+                                            <button class='btn btn-success'>Tìm kiếm</button>
+                                        </td>
                 
-            </tr>";
+                                    </tr>";
+                                    $index++;
                                 }
                             } else {
-                                echo "<tr><td colspan='6' class='text-center'>Không có dữ liệu</td></tr>";
+                                echo "<tr><td colspan='8' class='text-center'>Không có dữ liệu</td></tr>";
                             }
                             ?>
                         </tbody>

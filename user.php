@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 
 if ($_SESSION['role'] == 1) {
-    header("Location: index.php");
+    header("Location: admin.php");
     exit();
 }
 ?>

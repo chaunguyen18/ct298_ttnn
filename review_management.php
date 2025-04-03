@@ -7,8 +7,6 @@ $sql = "SELECT danh_gia.*, nguoi_dung.ND_hoten, thoi_gian.TG_thoigian, trung_tam
         INNER JOIN trung_tam ON thoi_gian.TT_ID = trung_tam.TT_ID
         INNER JOIN khoa_hoc ON thoi_gian.KH_ID = khoa_hoc.KH_ID
         ORDER BY thoi_gian.TG_thoigian DESC, nguoi_dung.ND_hoten ASC;
-
-
 ";
 $result = $conn->query($sql);
 ?>
