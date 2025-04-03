@@ -1,35 +1,35 @@
 <?php
 session_start();
-include("connect.php"); // Kết nối CSDL
+include("connect.php"); 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['loginUserName'];
-    $password = $_POST['loginUserPwd'];
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $username = $_POST['loginUserName'];
+//     $password = $_POST['loginUserPwd'];
 
-    // Kiểm tra tài khoản
-    $sql = "SELECT * FROM nguoi_dung WHERE ND_username = ? AND ND_password = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    
+//     $sql = "SELECT * FROM nguoi_dung WHERE ND_username = ? AND ND_password = ?";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->bind_param("ss", $username, $password);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
-        $_SESSION['user_id'] = $user['ND_ID'];
-        $_SESSION['username'] = $user['ND_username'];
-        $_SESSION['role'] = $user['ND_ROLE'];
+//     if ($result->num_rows == 1) {
+//         $user = $result->fetch_assoc();
+//         $_SESSION['user_id'] = $user['ND_ID'];
+//         $_SESSION['username'] = $user['ND_username'];
+//         $_SESSION['role'] = $user['ND_ROLE'];
 
-        // Chuyển hướng theo quyền
-        if ($user['ND_ROLE'] == 1) {
-            header("Location: index.php");
-        } else {
-            header("Location: user.php");  
-        }
-        exit();
-    } else {
-        $error = "Sai tài khoản hoặc mật khẩu!";
-    }
-}
+       
+//         if ($user['ND_ROLE'] == 1) {
+//             header("Location: index.php");
+//         } else {
+//             header("Location: user.php");  
+//         }
+//         exit();
+//     } else {
+//         $error = "Sai tài khoản hoặc mật khẩu!";
+//     }
+// }
 ?>
 
 

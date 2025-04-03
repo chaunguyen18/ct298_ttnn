@@ -161,7 +161,7 @@ function comparePricePV() {
   let districtID = document.querySelector("[aria-label='stateName']").value;
   let wardID = document.querySelector("[aria-label='phuongxaName']").value;
 
-  console.log("Selected values:", courseID, districtID, wardID); // Kiểm tra dữ liệu
+  console.log("Selected values:", courseID, districtID, wardID); 
 
   if (!courseID || !districtID || !wardID || 
       courseID === "Lựa chọn khóa học" || 
@@ -182,7 +182,7 @@ function comparePricePV() {
   })
   .then(response => response.text())
   .then(data => {
-    console.log("Response from server:", data); // Debug dữ liệu nhận được
+    console.log("Response from server:", data); 
     let tableBody = document.getElementById("compareData");
     tableBody.innerHTML = data; 
   })

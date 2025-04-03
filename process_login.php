@@ -1,19 +1,19 @@
 <?php
 session_start();
-include("connect.php"); // Kết nối CSDL
+include("connect.php"); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Kiểm tra biến có tồn tại không
+
     $username = isset($_POST['loginUserName']) ? trim($_POST['loginUserName']) : "";
     $password = isset($_POST['loginUserPwd']) ? trim($_POST['loginUserPwd']) : "";
 
-    // Kiểm tra nếu input rỗng
+
     if (empty($username) || empty($password)) {
         header("Location: index.php?error=empty");
         exit();
     }
 
-    // Kiểm tra tài khoản trong database
+
     $sql = "SELECT * FROM nguoi_dung WHERE ND_username = ? AND ND_password = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $password);
@@ -26,16 +26,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $user['ND_username'];
         $_SESSION['role'] = $user['ND_ROLE'];
 
-        // Điều hướng theo quyền
+
         if ($user['ND_ROLE'] == 1) {
-            header("Location: admin.php"); 
+            header("Location: admin.php");
         } else {
-            header("Location: user.php");  
+            header("Location: user.php");
         }
         exit();
     } else {
+        $error = "Sai tài khoản hoặc mật khẩu!";
         header("Location: index.php?error=invalid");
+        
         exit();
     }
 }
-?>

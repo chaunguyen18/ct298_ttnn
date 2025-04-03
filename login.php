@@ -1,12 +1,12 @@
 <?php
 session_start();
-include("connect.php"); // Kết nối CSDL
+include("connect.php"); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['loginUserName'];
     $password = $_POST['loginUserPwd'];
 
-    // Kiểm tra tài khoản
+    
     $sql = "SELECT * FROM nguoi_dung WHERE ND_username = ? AND ND_password = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $username, $password);
@@ -19,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $user['ND_username'];
         $_SESSION['role'] = $user['ND_ROLE'];
 
-        // Chuyển hướng theo quyền
         if ($user['ND_ROLE'] == 1) {
             header("Location: index.php");
         } else {
